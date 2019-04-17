@@ -33,17 +33,18 @@ def total(hand):
 	        total+= 10
 	    elif card == "A":
 	        if total >= 11: total+= 1
-	    else: total+= 11
+	    	else: 
+	    		total+= 11
 	    else:
-	    total += card
+	    	total += card
     return total
 
 def hit(hand):
 	card = deck.pop()
-	if card == 11:card = "J"
-	if card == 12:card = "Q"
-	if card == 13:card = "K"
-	if card == 14:card = "A"
+	if card == 11:card = 'J'
+	if card == 12:card = 'Q'
+	if card == 13:card = 'K'
+	if card == 14:card = 'A'
 	hand.append(card)
 	return hand
 
@@ -54,7 +55,7 @@ def clear():
 		os.system('clear')
 
 def print_results(dealer_hand, player_hand):
-	clear()
+	print "\n"
 	print "The dealer has a " + str(dealer_hand) + " for a total of " + str(total(dealer_hand))
 	print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
 
@@ -94,25 +95,28 @@ def game():
 	print "WELCOME TO BLACKJACK!\n"
 	dealer_hand = deal(deck)
 	player_hand = deal(deck)
-	while choice != "q":
-		print "The dealer is showing a " + str(dealer_hand[0])
-		print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
-		blackjack(dealer_hand, player_hand)
+	print "The dealer is showing a " + str(dealer_hand[0])
+	print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
+	blackjack(dealer_hand, player_hand)
+	quit=False;
+	while not quit:
 		choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
-		clear()
 		if choice == "h":
 			hit(player_hand)
-			while total(dealer_hand) < 17:
-				hit(dealer_hand)
-			score(dealer_hand, player_hand)
-			play_again()
+			print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
+			if total(player_hand)>21:
+				print('you busted')
+				play_again
 		elif choice == "s":
 			while total(dealer_hand) < 17:
 				hit(dealer_hand)
+				print "Dealer have a " + str(player_hand) + " for a total of " + str(total(player_hand))
+				if total(dealer_hand)>21:print('Dealer busts, you win!')
 			score(dealer_hand, player_hand)
 			play_again()
 		elif choice == "q":
 			print "Bye!"
+			quit=True;
 			exit()
 	
 if __name__ == "__main__":
