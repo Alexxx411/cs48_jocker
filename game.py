@@ -45,6 +45,8 @@ def hit(hand):
 	if card == 12:card = 'Q'
 	if card == 13:card = 'K'
 	if card == 14:card = 'A'
+	print "\n"
+	print "a new card "+str(card)+" is draw."
 	hand.append(card)
 	return hand
 
@@ -106,7 +108,7 @@ def game():
 			print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
 			if total(player_hand)>21:
 				print('you busted')
-				play_again
+				play_again()
 		elif choice == "s":
 			while total(dealer_hand) < 17:
 				hit(dealer_hand)
