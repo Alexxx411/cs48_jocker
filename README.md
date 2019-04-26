@@ -1,1 +1,5 @@
 # cs48_jocker
+
+
+TALK IS CHEAP
+SHOW ME THE CODE!!!
