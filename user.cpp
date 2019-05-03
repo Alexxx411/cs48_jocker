@@ -25,6 +25,13 @@ int main(){
 	else if (username == "Alex" && password == "test"){
 		cout << "\nSuccessful Login\n\n";
 		loginSuccess = true;
+		std::string filename = "/home/zeyuhe/Desktop/cs48_jocker/game.py";
+
+
+std::string command = "python ";
+command += filename;
+system(command.c_str());
+
 	}
 	else{
 		cout << "ID or password incorrect, please retry or contact our tech Ops manager Alex.\n";
