@@ -17,7 +17,7 @@ def button(msg,x,y,w,h,ic,action):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        pygame.draw.ellipse(screen, ic,(x,y,w,h))
+        pygame.draw.ellipse(screen, bright_green_bean,(x,y,w,h))
         if click[0] == 1 and action != None:
             action()
     else:
@@ -57,6 +57,7 @@ green_bean = (204,232,207)
 bright_red = (255,0,0)
 bright_green = (0,255,0)
 bright_sky_blue = (80,100,200)
+bright_green_bean = (230,200,190)
 black = (0,0,0)
 
 
