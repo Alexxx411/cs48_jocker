@@ -1,10 +1,30 @@
 import os
 import pygame, sys
+import time
+import random
 from pygame.locals import *
 import pygame
 
 # initialize game engine
 pygame.init()
+
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+
+def button(msg,x,y,w,h,ic,ac):
+    mouse = pygame.mouse.get_pos()
+
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        pygame.draw.ellipse(screen, ac,(x,y,w,h))
+    else:
+        pygame.draw.ellipse(screen, ic,(x,y,w,h))
+
+    smallText = pygame.font.Font("freesansbold.ttf",20)
+    textSurf, textRect = text_objects(msg, smallText)
+    screen.blit(textSurf, [x+(w/10), y+(h/3)])
+
 
 rect_x=0
 rect_y=50
@@ -30,8 +50,12 @@ dead=False
 WHITE=(255,255,255)
 red = (200,0,0)
 green = (0,200,0)
+sky_blue = (20,100,230)
 bright_red = (255,0,0)
 bright_green = (0,255,0)
+bright_sky_blue = (80,100,200)
+black = (0,0,0)
+
 
 
 #end of color, go to clock 
@@ -48,11 +72,8 @@ card2=pygame.image.load("ca.jpg")
 card3=pygame.image.load("s3.jpg")
 card_player=pygame.image.load("hq.jpg")
 
-
-
-
-
-
+def game():
+    screen.fill(WHITE)
 
 
 while(dead==False):
@@ -62,44 +83,64 @@ while(dead==False):
 
     screen.blit(background_image, [0, 0])
 
-    pygame.display.flip()
+    #pygame.display.flip()
     clock.tick(clock_tick_rate)
 
     pygame.draw.rect(screen, WHITE , [rect_x,rect_y,rect_width,rect_height])
     rect_x+=animation_increment
 
- #   def game_intro():
-#
- #   	intro = True
-#
- #   	while intro:
-  #      	for event in pygame.event.get():
-   #         	#print(event)
-    #       		if event.type == pygame.QUIT:
-     #      	 		pygame.display.quit()
-            
+    largeText = pygame.font.Font('freesansbold.ttf',115)
+    pygame.draw.ellipse(screen, WHITE,(50,500,100,50))
+    pygame.draw.ellipse(screen, sky_blue,(400,500,100,50))
+    pygame.draw.ellipse(screen, red,(750,500,100,50))
+
+
+    smallText = pygame.font.Font("freesansbold.ttf",20)
+    textSurf, text_01 = text_objects("START!", smallText)
+    screen.blit(textSurf,[60,515])
+
+    textSurf, text_01 = text_objects("RESTART!", smallText)
+    screen.blit(textSurf,[406,515])
+
+    textSurf, text_01 = text_objects("QUIT!", smallText)
+    screen.blit(textSurf,[770,515])
+
+
+    button("START!",50,500,100,50,WHITE,game)
+    button(" QUIT!",750,500,100,50,red,game)
+
+
+
+    #pygame.display.update()
+    #clock.tick(15)
+
+
+
+
+
+
+# def game_intro():
+
+#     intro = True
+
+#     while intro:
+#         for event in pygame.event.get():
+#             print(event)
+#             if event.type == pygame.QUIT:
+#                 pygame.quit()
+#                 quit()
                 
-     #   	gameDisplay.fill(white)
-      #  	largeText = pygame.font.Font('freesansbold.ttf',115)
-   #      	TextRect.center = ((display_width/2),(display_height/2))
- #       	gameDisplay.blit(TextSurf, TextRect)
+        
+        
+    
 
-#
-#        	mouse = pygame.mouse.get_pos()
 
-        #print(mouse)
 
-      #  	if 150+100 > mouse[0] > 150 and 450+50 > mouse[1] > 450:
-     #     	 	pygame.draw.rect(gameDisplay, bright_green,(150,450,100,50))
-    #    	else:
-   #         	pygame.draw.rect(gameDisplay, green,(150,450,100,50))
-  #      		pygame.draw.rect(gameDisplay, red,(550,450,100,50))
- #       		pygame.display.update()
-#        		clock.tick(15)
+
 
 
 #cards are all below
-    backcard=pygame.transform.scale(card_back,(90,110))
+    backcard = pygame.transform.scale(card_back,(90,110))
     screen.blit(backcard,(100,100))
 
     #card 0 
@@ -121,3 +162,11 @@ while(dead==False):
 
     if(rect_x==window_width-rect_width):
         rect_x=0
+
+
+
+
+
+
+
+
