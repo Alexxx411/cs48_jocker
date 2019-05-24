@@ -13,11 +13,13 @@ def text_objects(text, font):
     return textSurface, textSurface.get_rect()
 
 
-def button(msg,x,y,w,h,ic,ac):
+def button(msg,x,y,w,h,ic,action):
     mouse = pygame.mouse.get_pos()
-
+    click = pygame.mouse.get_pressed()
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        pygame.draw.ellipse(screen, ac,(x,y,w,h))
+        pygame.draw.ellipse(screen, ic,(x,y,w,h))
+        if click[0] == 1 and action != None:
+            action()
     else:
         pygame.draw.ellipse(screen, ic,(x,y,w,h))
 
@@ -51,6 +53,7 @@ WHITE=(255,255,255)
 red = (200,0,0)
 green = (0,200,0)
 sky_blue = (20,100,230)
+green_bean = (204,232,207)
 bright_red = (255,0,0)
 bright_green = (0,255,0)
 bright_sky_blue = (80,100,200)
@@ -73,7 +76,7 @@ card3=pygame.image.load("s3.jpg")
 card_player=pygame.image.load("hq.jpg")
 
 def game():
-    screen.fill(WHITE)
+    quit()
 
 
 while(dead==False):
@@ -89,25 +92,26 @@ while(dead==False):
     pygame.draw.rect(screen, WHITE , [rect_x,rect_y,rect_width,rect_height])
     rect_x+=animation_increment
 
-    largeText = pygame.font.Font('freesansbold.ttf',115)
-    pygame.draw.ellipse(screen, WHITE,(50,500,100,50))
-    pygame.draw.ellipse(screen, sky_blue,(400,500,100,50))
-    pygame.draw.ellipse(screen, red,(750,500,100,50))
+    # largeText = pygame.font.Font('freesansbold.ttf',115)
+    # pygame.draw.ellipse(screen, WHITE,(50,500,100,50))
+    # pygame.draw.ellipse(screen, sky_blue,(400,500,100,50))
+    # pygame.draw.ellipse(screen, red,(750,500,100,50))
 
 
-    smallText = pygame.font.Font("freesansbold.ttf",20)
-    textSurf, text_01 = text_objects("START!", smallText)
-    screen.blit(textSurf,[60,515])
+    # smallText = pygame.font.Font("freesansbold.ttf",20)
+    # textSurf, text_01 = text_objects("START!", smallText)
+    # screen.blit(textSurf,[60,515])
 
-    textSurf, text_01 = text_objects("RESTART!", smallText)
-    screen.blit(textSurf,[406,515])
+    # textSurf, text_01 = text_objects("RESTART!", smallText)
+    # screen.blit(textSurf,[406,515])
 
-    textSurf, text_01 = text_objects("QUIT!", smallText)
-    screen.blit(textSurf,[770,515])
+    # textSurf, text_01 = text_objects("QUIT!", smallText)
+    # screen.blit(textSurf,[770,515])
 
 
-    button("START!",50,500,100,50,WHITE,game)
-    button(" QUIT!",750,500,100,50,red,game)
+    button("START!",50,500,100,50,green_bean,game)
+    button(" QUIT!",750,500,100,50,green_bean,game)
+    button("STAND!",400,500,100,50,green_bean,game)
 
 
 
