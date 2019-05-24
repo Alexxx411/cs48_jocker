@@ -1,8 +1,10 @@
 import os
 import random
+import playerclass
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-
+same=False
+win = False
 def deal(deck):
     hand = []
     for i in range(2):
@@ -86,7 +88,7 @@ def blackjack(dealer_hand, player_hand):
 
 def score(dealer_hand, player_hand):
 	same = False
-	win = True
+	global win
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
 		print "Congratulations! You got a Blackjack!\n"
@@ -132,13 +134,107 @@ def bet(game_player):
 	return betamount
 
 
+def check_out(game_player,win,same,betamount): 
+	
+	if same == True:
+		print "Now your balance is " + str(game_player.getBalance()) + "."
+	elif win == True:
+		game_player.winmoney(betamount);
+		print "win, Now your balance is " + str(game_player.getBalance()) + "."
+
+		##now we change the data base
+
+		#the second method
+		with open("account.txt", "r") as f:
+			lines = f.readlines()
+		with open("account.txt", "w") as f:
+			for line in lines:
+				if line.split()[0] != game_player.getName():
+					f.write(line)
+				else:
+					f.write(game_player.getName()+" "+ game_player.getPassword()+ " "+str(game_player.getBalance())+'\n')
+		#
+		# infile = open('account.txt','r').readlines()
+		# with open('account.txt','w') as outfile:
+		#     for index,line in enumerate(infile):
+		#         if index != game_player.getLine_posi():
+		#             outfile.write(line)
+		#         # else:
+		#         # 	outfile.write(game_player.getName+" "+game_player.getPassword+" "+game_player.winmoney(betamount))
+		# print(game_player.getLine_posi() + " modifid!")
+		# f=open("account.txt", "a+")
+		# f.ge
+		# f.write("asd")
+		# outfile.close()
+		
+	elif win == False:
+		
+		print "Now your balance is " + str(game_player.losemoney(betamount)) + "."
+		# print "(lost. Now your balance is " + str(game_player.getBalance()) + "."
+		##now we change the data base
+		# infile = open('account.txt','r').readlines()
+		# with open('account.txt','w') as outfile:
+		#     for index,line in enumerate(infile):
+		#         if index != game_player.getLine_posi():
+		#             outfile.write(line)
+		#         # else:
+		#         # 	outfile.write(game_player.getName+" "+game_player.getPassword+" "+game_player.winmoney(betamount))
+		#         print(game_player.getLine_posi() + " modifid!")
+		# outfile.close()
+		#the second method
+		with open("account.txt", "r") as f:
+			lines = f.readlines()
+		with open("account.txt", "w") as f:
+			for line in lines:
+				if line.split()[0] != game_player.getName():
+					f.write(line)
+				else:
+					f.write(game_player.getName()+" "+ game_player.getPassword()+ " "+str(game_player.getBalance())+'\n')
+		#
+		# f=open("account.txt", "a+")
+		# f.write("asd")
 
 def game():
+	global win
 	choice = 0
 	clear()
-	print "WELCOME TO BLACKJACK!\n"
+	num_lines = sum(1 for line in open('account.txt'))
+	
+	# print(num_lines)
+
+	
+
+
+	
 	win = True
-	bet(game_player)
+	##need to import the balance and store it to the game_player
+	
+	count = 0
+	
+	f = open("account.txt", "r")
+	lines = f.readlines()
+
+	# print(lines[num_lines-1])
+	info_line = lines[int(lines[num_lines-1])]
+	line_posi = lines[num_lines-1]
+	# print(line_posi)
+	
+	# info_line = lines[int(line_posi)]
+	
+			
+	
+	game_player = playerclass.player(info_line.split()[0] , info_line.split()[1] ,int(info_line.split()[2]),line_posi)
+	print ("WELCOME TO BLACKJACK, " + game_player.getName() + "!\n")
+	f.close()
+	##clean the last line(which is the line position of the current player)
+	# infile = open('account.txt','r').readlines()
+	# with open('account.txt','w') as outfile:
+	#     for index,line in enumerate(infile):
+	#         if index != game_player.getLine_posi:
+	#             outfile.write(line)
+
+
+	betamount = bet(game_player)
 	dealer_hand = deal(deck)
 	player_hand = deal(deck)
 	print "The dealer is showing a " + str(dealer_hand[0])
@@ -156,7 +252,7 @@ def game():
 			if total(player_hand)>21:
 				print('Sorry. You busted. You lose.')
 				win = False
-				check_out();
+				check_out(game_player,win,same,betamount);
 				play_again()
 		elif choice == "s":
 			while total(dealer_hand) < 17:
@@ -165,10 +261,10 @@ def game():
 				if total(dealer_hand)>21:
 					print('Dealer busts, you win!')
 					win = True
-					check_out();
+					check_out(game_player,win,same,betamount);
 					play_again()
 			score(dealer_hand, player_hand)
-			check_out();
+			check_out(game_player,win,same,betamount);
 			play_again()
 		elif choice == "q":
 			print "Bye!"
@@ -177,47 +273,6 @@ def game():
 	
 if __name__ == "__main__":
 	game()
-
-
-
-
-def check_out(game_player,win,same,betamount): 
-	if same == True:
-		print "Now your balance is " + game_player.getBalance() + "."
-	elif win == True:
-		game_player.winmoney(betamount);
-		print "Now your balance is " + game_player.getBalance() + "."
-	elif win == False:
-		game_player.losemoney(betamount);
-		print "Now your balance is " + game_player.getBalance() + "."
-
-
-
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
