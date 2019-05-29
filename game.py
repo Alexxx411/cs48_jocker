@@ -6,41 +6,49 @@ deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 same=False
 win = False
 def deal(deck):
-    hand = []
-    for i in range(2):
-	    random.shuffle(deck)
-	    card = deck.pop()
-	    if card == 11:card = "J"
-	    if card == 12:card = "Q"
-	    if card == 13:card = "K"
-	    if card == 14:card = "A"
-	    hand.append(card)
-    return hand
+	hand = []
+	for i in range(2):
+		random.shuffle(deck)
+		card = deck.pop()
+		if card == 11:card = "J"
+		if card == 12:card = "Q"
+		if card == 13:card = "K"
+		if card == 14:card = "A"
+		hand.append(card)
+	return hand
 
 
 def play_again():
-    again = raw_input("Do you want to play again? (Y/N) : ").lower()
-    if again == "y":
-	    dealer_hand = []
-	    player_hand = []
-	    deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
-	    game()
-    else:
-	    print "Bye!"
-	    exit()
+	again = raw_input("Do you want to play again? (Y/N), or type 'rank' to check your ranking : ").lower()
+	if again == "y":
+
+		dealer_hand = []
+		player_hand = []
+		deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
+		game()
+
+
+	elif (again == 'rank'):
+		
+		rank()
+		play_again()
+
+	else:
+		print "Bye!"
+		exit()
 
 def total(hand):
-    total = 0
-    for card in hand:
-	    if card == "J" or card == "Q" or card == "K":
-	        total+= 10
-	    elif card == "A":
-	        if total >= 11: total+= 1
-	    	else: 
-	    		total+= 11
-	    else:
-	    	total += card
-    return total
+	total = 0
+	for card in hand:
+		if card == "J" or card == "Q" or card == "K":
+			total+= 10
+		elif card == "A":
+			if total >= 11: total+= 1
+			else: 
+				total+= 11
+		else:
+			total += card
+	return total
 
 def hit(hand):
 	card = deck.pop()
@@ -112,8 +120,8 @@ def score(dealer_hand, player_hand):
 		win = True
 	elif total(player_hand) < total(dealer_hand):
 		print_results(dealer_hand, player_hand)
-   		print "Sorry. Your score isn't higher than the dealer. You lose.\n"
-   		win = False
+		print "Sorry. Your score isn't higher than the dealer. You lose.\n"
+		win = False
 	elif total(player_hand) > total(dealer_hand):
 		print_results(dealer_hand, player_hand)			   
 		print "Congratulations. Your score is higher than the dealer. You win\n"
@@ -160,35 +168,12 @@ def check_out(game_player,win,same,betamount):
 					f.write(line)
 				else:
 					f.write(game_player.getName()+" "+ game_player.getPassword()+ " "+str(game_player.getBalance())+'\n')
-		#
-		# infile = open('account.txt','r').readlines()
-		# with open('account.txt','w') as outfile:
-		#     for index,line in enumerate(infile):
-		#         if index != game_player.getLine_posi():
-		#             outfile.write(line)
-		#         # else:
-		#         # 	outfile.write(game_player.getName+" "+game_player.getPassword+" "+game_player.winmoney(betamount))
-		# print(game_player.getLine_posi() + " modifid!")
-		# f=open("account.txt", "a+")
-		# f.ge
-		# f.write("asd")
-		# outfile.close()
+
 		
 	elif win == False:
 		
 		print "Now your balance is " + str(game_player.losemoney(betamount)) + "."
-		# print "(lost. Now your balance is " + str(game_player.getBalance()) + "."
-		##now we change the data base
-		# infile = open('account.txt','r').readlines()
-		# with open('account.txt','w') as outfile:
-		#     for index,line in enumerate(infile):
-		#         if index != game_player.getLine_posi():
-		#             outfile.write(line)
-		#         # else:
-		#         # 	outfile.write(game_player.getName+" "+game_player.getPassword+" "+game_player.winmoney(betamount))
-		#         print(game_player.getLine_posi() + " modifid!")
-		# outfile.close()
-		#the second method
+
 		with open("account.txt", "r") as f:
 			lines = f.readlines()
 		with open("account.txt", "w") as f:
@@ -197,9 +182,36 @@ def check_out(game_player,win,same,betamount):
 					f.write(line)
 				else:
 					f.write(game_player.getName()+" "+ game_player.getPassword()+ " "+str(game_player.getBalance())+'\n')
-		#
-		# f=open("account.txt", "a+")
-		# f.write("asd")
+	
+
+#here we implement the ranking feature 
+
+def rank():
+	#read each line and store all the line that start with charactor in a list
+	#then we sort the list(["ann 100", "Ben 500"])
+	#then we user the list to creat an dictionary to sort
+	player_list = []
+	f = open("account.txt", "r")
+	lines = f.readlines()
+	for each_line in lines:
+		if (each_line[0].isalpha()):
+			player_list.append(each_line)
+
+	#then the player_list has all the lines with palyer info
+	#thus we create the dictionary
+	# print (player_list)
+	player_dic = {}
+	for i in player_list:
+		player_dic.update({(i.split())[0] : int((i.split())[2]) })
+
+	# sorted(player_dic)
+	for i in ( sorted(player_dic.items(), key=lambda x: x[1], reverse=True)):
+		print i
+	# player_dic
+	#then we need to sort and print out the ranking
+	# for key ,  value in sorted_dic.items():
+	# 	print (key,value)
+
 
 def game():
 	global win
@@ -236,9 +248,9 @@ def game():
 	#clean the last line(which is the line position of the current player)
 	infile = open('account.txt','r').readlines()
 	with open('account.txt','w') as outfile:
-	    for index,line in enumerate(infile):
-	        if index != game_player.getLine_posi:
-	            outfile.write(line)
+		for index,line in enumerate(infile):
+			if index != game_player.getLine_posi:
+				outfile.write(line)
 
 
 	betamount = bet(game_player)
@@ -251,7 +263,7 @@ def game():
 	quit=False
 	while not quit:
 		if (total(player_hand)!=21):
-			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
+			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit, or type 'rank' to check your ranking: ").lower()
 		else:
 			choice="s" #here we have the player got a black jack and win 
 			win = True
@@ -279,6 +291,8 @@ def game():
 			score(dealer_hand, player_hand)
 			check_out(game_player,win,same,betamount)
 			play_again()
+		elif choice =="rank":
+			rank()
 		elif choice == "q":
 			print "Bye!"
 			quit=True
