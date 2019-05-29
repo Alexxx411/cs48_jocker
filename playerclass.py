@@ -1,12 +1,22 @@
 class player:
 
-	def __init__ (self, name, password, money):
+	def __init__ (self, name, password, money,line_posi):
 		self.name=name
 		self.password=password
 		self.money=money
+		self.line_posi = line_posi
+		##line position starts at 0
+
+	def getLine_posi(self):
+		return self.line_posi
 
 	def getBalance(self):
 		return self.money
+	def getName(self):
+		return self.name
+
+	def getPassword(self):
+		return self.password
 
 	def changename(self,newname):
 		self.name=newname
@@ -27,7 +37,7 @@ class player:
 		return self.money
 
 	def losemoney(self,betamount):
-		self.money-=betamount
+		self.money=self.money-betamount
 		return self.money
 
 if __name__ == "__main__":
