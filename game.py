@@ -77,18 +77,23 @@ def print_results(dealer_hand, player_hand):
 	print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
 
 def blackjack(dealer_hand, player_hand):
+	global win
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
 		print "Congratulations! You got a Blackjack!\n"
+		win = True
 		play_again()
 	elif total(dealer_hand) == 21:
 		print_results(dealer_hand, player_hand)		
 		print "Sorry, you lose. The dealer got a blackjack.\n"
+		win = False
 		play_again()
 
 def score(dealer_hand, player_hand):
+	global same
 	same = False
 	global win
+
 	if total(player_hand) == 21:
 		print_results(dealer_hand, player_hand)
 		print "Congratulations! You got a Blackjack!\n"
@@ -124,10 +129,10 @@ def bet(game_player):
 		betamount = int(val)
 		while betamount > game_player.getBalance():
 			print "Error: Your bet amount is bigger than your balance! Please try again.\n"
-			bet(game_player)
+			return bet(game_player)
 		while betamount < 0:
 			print "Error: your bet amount is smaller than zero! Please try again.\n"
-			bet(game_player)
+			return bet(game_player)
 	except ValueError:
 		print "please type a integer!\n"
 		bet(game_player)
@@ -137,7 +142,9 @@ def bet(game_player):
 def check_out(game_player,win,same,betamount): 
 	
 	if same == True:
-		print "Now your balance is " + str(game_player.getBalance()) + "."
+		print "push. Now your balance is " + str(game_player.getBalance()) + "."
+		return
+
 	elif win == True:
 		game_player.winmoney(betamount);
 		print "win, Now your balance is " + str(game_player.getBalance()) + "."
@@ -199,7 +206,7 @@ def game():
 	choice = 0
 	clear()
 	num_lines = sum(1 for line in open('account.txt'))
-	
+	#how many lines we have in total
 	# print(num_lines)
 
 	
@@ -226,12 +233,12 @@ def game():
 	game_player = playerclass.player(info_line.split()[0] , info_line.split()[1] ,int(info_line.split()[2]),line_posi)
 	print ("WELCOME TO BLACKJACK, " + game_player.getName() + "!\n")
 	f.close()
-	##clean the last line(which is the line position of the current player)
-	# infile = open('account.txt','r').readlines()
-	# with open('account.txt','w') as outfile:
-	#     for index,line in enumerate(infile):
-	#         if index != game_player.getLine_posi:
-	#             outfile.write(line)
+	#clean the last line(which is the line position of the current player)
+	infile = open('account.txt','r').readlines()
+	with open('account.txt','w') as outfile:
+	    for index,line in enumerate(infile):
+	        if index != game_player.getLine_posi:
+	            outfile.write(line)
 
 
 	betamount = bet(game_player)
@@ -239,13 +246,19 @@ def game():
 	player_hand = deal(deck)
 	print "The dealer is showing a " + str(dealer_hand[0])
 	print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
-	blackjack(dealer_hand, player_hand)
+	# blackjack(dealer_hand, player_hand)
+	#wtf this line is insane for the bet feature
 	quit=False
 	while not quit:
 		if (total(player_hand)!=21):
 			choice = raw_input("Do you want to [H]it, [S]tand, or [Q]uit: ").lower()
 		else:
-			choice="s"
+			choice="s" #here we have the player got a black jack and win 
+			win = True
+			print "Congratulations! You got a Blackjack!\n"
+			check_out(game_player,win,same,betamount)
+			play_again()
+
 		if choice == "h":
 			hit(player_hand)
 			print "You have a " + str(player_hand) + " for a total of " + str(total(player_hand))
@@ -261,10 +274,10 @@ def game():
 				if total(dealer_hand)>21:
 					print('Dealer busts, you win!')
 					win = True
-					check_out(game_player,win,same,betamount);
+					check_out(game_player,win,same,betamount)
 					play_again()
 			score(dealer_hand, player_hand)
-			check_out(game_player,win,same,betamount);
+			check_out(game_player,win,same,betamount)
 			play_again()
 		elif choice == "q":
 			print "Bye!"

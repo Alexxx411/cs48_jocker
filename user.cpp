@@ -42,6 +42,7 @@ int main() {
 
 		size_t pos ;
 		size_t pos2;
+		int line_pos = 0;
 
 		while (inFile.good())
 		{
@@ -57,9 +58,15 @@ int main() {
 				// {
 				loginSuccess = true;
 				// }
+				//  if we have the user passed the log in password, we will store the line of this
+				//  user in the very last line
+				std::ofstream outfile;
+				outfile.open("account.txt", std::ios_base::app);
+				outfile << line_pos << endl;
 
 				break;
 			}
+			line_pos++;
 		}
 		if (username == "Kenneth" && password == "ASDFGHJKL;'") {
 			cout << "\nSuccessful Login\n\n";
@@ -93,7 +100,44 @@ int main() {
 
 			std::ofstream outfile;
 			outfile.open("account.txt", std::ios_base::app);
-			outfile << new_name << " " << new_password << endl;
+			outfile << new_name << " " << new_password << " " << 1000 << endl;
+			outfile.close();
+
+			// then we search again
+			string search = new_name;
+
+			size_t pos ;
+			size_t pos2;
+			int line_pos = 0;
+			// cout<<"ya0";
+			inFile.close();
+			inFile.open("account.txt");
+			while (inFile.good())
+			{
+				// cout<<"ya";
+				getline(inFile, line); // get line from file
+				pos = line.find(search); // search
+				pos2 = line.find(new_password);
+				if (pos != string::npos && pos2 != string::npos) // string::npos is returned if string is not found
+				{
+					// cout<<"find!"<<endl;
+					// string correct = "";
+					// getline(inFile,line2);
+					// if ( line2 == password)
+					// {
+					loginSuccess = true;
+					// cout<<"ya!";
+					// }
+					//  if we have the user passed the log in password, we will store the line of this
+					//  user in the very last line
+					std::ofstream outfile;
+					outfile.open("account.txt", std::ios_base::app);
+					outfile << line_pos << endl;
+
+					break;
+				}
+				line_pos++;
+			}
 
 
 		}
