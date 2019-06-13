@@ -1,0 +1,5 @@
+Amy,pwd1,2,3,80
+David,pwd2,2,6,220
+Tom,pwd3,7,1,320
+June,pwd4,5,5,160
+Alian,pwd5,5,9,160
