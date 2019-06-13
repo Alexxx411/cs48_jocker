@@ -1,5 +1,7 @@
 # cs48_jocker
 
+****(The final version codes are in the folders, "single_version" is the version we present in class and it meets our expectations. We also have a new version of game in "multi_version" folder. But the new version doesn't meet our expectations but it still has some fun staff so we decide to put codes in this folder. )******
+
 
 TALK IS CHEAP
 SHOW ME THE CODE!!!
